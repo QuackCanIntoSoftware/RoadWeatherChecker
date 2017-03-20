@@ -3,6 +3,7 @@ import requests
 import http.client as ht
 from lxml import html, etree
 from citiesDescription import CitiesDescriptions
+from xmlParser import xmlParser
 
 pageUrl = "www.accuweather.com"
 pageGetLink = "/pl/pl/bieru/2659691/hourly-weather-forecast/2659691"
@@ -25,9 +26,16 @@ nextLink = nextLink[nextLink.find(pageUrl)+len(pageUrl):]
 
 print("\n\n------------------------\n\n")
 if 1:
-    cd = CitiesDescriptions('Bierun', pageUrl, pageGetLink, broken_html)
+    list = xmlParser()
+    citiesObjs = [CitiesDescriptions(city[0], pageUrl, city[1], '') for city in list.citiesList]
+    for city in citiesObjs:
+       # city.getTomorrowFullInfo()
+        city.getTodayFullInfo()
+
+    # cd = CitiesDescriptions('Bierun', pageUrl, pageGetLink, '')
+    # cd.getAdditionalParametersFromWebPage()
     #cd = CitiesDescriptions('Bierun', broken_html)
-    cd.addEightHours()
-    cd.addEightHours()
-    for subList in cd.valuesList:
-        print(subList)
+    #cd.addEightHours()
+   # cd.addEightHours()
+   #  for subList in cd.valuesList:
+   #      print(subList)

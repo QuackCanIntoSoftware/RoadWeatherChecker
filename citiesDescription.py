@@ -5,11 +5,12 @@ class CitiesDescriptions:
     def __init__(self, name, baseUrl, getLink, pageContent):
         self.name = name
         self.baseUrl = baseUrl
+        self.defaultGetLink = getLink
         self.currentGetLink = getLink
         if pageContent:
             self.currenteTree = xhtml.fromstring(pageContent)
         else:
-            self.currenteTree = getWebPageeTree()
+            self.currenteTree = self.getWebPageeTree()
         self.valuesList = self.parseValuesFromCurrentWebPage()
 
         self.nextEightHoursLink = ''
@@ -69,6 +70,12 @@ class CitiesDescriptions:
         nextLink = self.currenteTree.xpath('//div[@class="control-bar hourly-control"]//a[@class="right-float"]')[0].get('href')
         self.nextEightHoursLink = nextLink[nextLink.find(self.baseUrl) + len(self.baseUrl):]
 
+        self.pageCityName = self.currenteTree.xpath('// li[ @ id = "current-city-tab"] / a / span[@class="current-city"]/h1/text()')[0]
+
+        self.pageDay = self.currenteTree.xpath('//div[@class="hourly-table overview-hourly"]/table/thead/tr/th/text()')[0].strip()
+        print(self.pageDay)
+
+
     def addEightHours(self):
         if not self.nextEightHoursLink:
             self.getAdditionalParametersFromWebPage()
@@ -94,6 +101,47 @@ class CitiesDescriptions:
 
 
         #tree = xhtml.fromstring(wPageData)
+
+    def getTodayFullInfo(self):
+        self.todayTable = [[]]
+
+        if not self.nextEightHoursLink:
+            self.getAdditionalParametersFromWebPage()
+
+        hour = int(self.nextEightHoursLink[self.nextEightHoursLink.find("?hour=")+6:])
+
+        # TODO: ogarnianie do godziny 24
+
+        # self.currentGetLink = self.nextEightHoursLink
+        # self.currenteTree = self.getWebPageeTree()
+        # self.nextEightHoursLink = ''
+        # newValues = self.parseValuesFromCurrentWebPage()
+
+
+
+
+    def getTomorrowFullInfo(self):
+        hour = 24
+        tomorrowValues = [[]]
+
+        self.currentGetLink = self.defaultGetLink + "?hour=" + str(hour)
+        self.currenteTree = self.getWebPageeTree()
+        tomorrowValues = self.parseValuesFromCurrentWebPage()
+
+        while hour < 48:
+            self.currentGetLink = self.defaultGetLink+"?hour="+str(hour)
+            self.currenteTree = self.getWebPageeTree()
+            newValues = self.parseValuesFromCurrentWebPage()
+
+            for i, sublist in enumerate(newValues):
+                tomorrowValues[i] = tomorrowValues[i] + newValues[i]
+            hour += 8
+
+        for subList in tomorrowValues:
+            print(subList)
+
+    # TODO: get 24h. Przenieśc get tomoroow i today do innej fukcji, a te zeby tylko ustalały zakres get24h(start)
+
 
 
 
