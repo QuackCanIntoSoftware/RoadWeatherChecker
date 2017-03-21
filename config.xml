@@ -1,0 +1,8 @@
+<CONFIGURATION>
+	<PAGE NAME="AccuWeather" WWW="www.accuweather.com">
+		<CITIES>
+			<CITY NAME="BIERUŃ" GETLINK="/pl/pl/bieru/2659691/hourly-weather-forecast/2659691"></CITY>
+			<CITY NAME="CZĘSTOCHOWA" GETLINK="/pl/pl/czstochowa/275785/hourly-weather-forecast/275785"></CITY>
+		</CITIES>
+	</PAGE>	
+</CONFIGURATION>
