@@ -1,5 +1,6 @@
 import lxml.html as xhtml
 
+from xml.etree import ElementTree as ET
 
 class xmlParser:
     def __init__(self):
@@ -12,3 +13,17 @@ class xmlParser:
             # ["Wrzosowa", "/pl/pl/wrzosowa/275754/hourly-weather-forecast/275754"],
             ["Częstochowa", "/pl/pl/czstochowa/275785/hourly-weather-forecast/275785"]
         ]
+
+    @staticmethod
+    def __getNamesAndLinks():
+        pass
+
+    @staticmethod
+    def getConfiguration(filename):
+        xmlTree = ET.parse(os.path.join(os.path.dirname(sys.argv[0]), filename))
+        root = xmlTree.getroot()
+        if root:
+
+        xmlParser.__getNamesAndLinks()
+        pass
+
