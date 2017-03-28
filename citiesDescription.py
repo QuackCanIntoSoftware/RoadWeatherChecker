@@ -30,7 +30,6 @@ class CitiesDescriptions:
     def parseValuesFromCurrentWebPage(self):
 
         overviewTable = []
-        
 
         overviewTable.append([hour.xpath('div[1]/text()')[0] for hour in
                               self.currenteTree.xpath('//div[@class="hourly-table overview-hourly"]/table/thead/tr')[0].findall(
@@ -87,8 +86,6 @@ class CitiesDescriptions:
         self.mergeWithValuesTable(newValues)
 
     def mergeWithValuesTable(self, newValues):
-
-
         for i, sublist in enumerate(newValues):
             self.valuesList[i] = self.valuesList[i] + newValues[i]
 
