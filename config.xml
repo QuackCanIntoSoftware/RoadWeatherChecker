@@ -1,5 +1,5 @@
-<CONFIGURATION>
-	<PAGEa>
+<CONFIGURATIONa>
+	<PAGE>
 		<NAME>AccuWeather</NAME>
 		<WWW>www.accuweather.com</WWW>
 		<CITIES>
@@ -12,26 +12,12 @@
 				<GETLINK>/pl/pl/czstochowa/275785/hourly-weather-forecast/275785"></GETLINK>
 			</CITY>
 		</CITIES>
-	</PAGEa>
-	<PAGEa>
-		<NAME>AccuWeather</NAME>
-		<WWW>www.accrthshuweather.com</WWW>
-		<CITIES>
-			<CITY>
-				<NAME>Bieruń</NAME>
-				<GETLINK>/pl/pl/bieru/2659691/hourly-weather-forecast/2659691</GETLINK>>
-			</CITY>
-			<CITY>
-				<NAME>Częstochowa</NAME>
-				<GETLINK>/pl/pl/czstochowa/275785/hourly-weather-forecast/275785"></GETLINK>
-			</CITY>
-		</CITIES>
-	</PAGEa>
-	<TIME>
+	</PAGE>
+	<TIMEa>
 		<TYPE>hour</TYPE>
 		<HOUR>12</HOUR>
 		<COUNT>10</COUNT>
-	</TIME>
+	</TIMEa>
 	<TIME>
 		<TYPE>hoasdfur</TYPE>
 		<HOUR>12</HOUR>
@@ -42,4 +28,4 @@
 		<OFFSET>3</OFFSET>
 		<COUNT>10</COUNT>
 	</TIME>
-</CONFIGURATION>
+</CONFIGURATIONa>

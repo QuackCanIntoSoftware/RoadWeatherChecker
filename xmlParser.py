@@ -1,14 +1,17 @@
 from xml.etree import ElementTree as ET
 import os
-import sys
 
 
 class xmlParser:
-    def __init__(self):
-        self.citiesList = [
-            ["Bieruń", "/pl/pl/bieru/2659691/hourly-weather-forecast/2659691"],
-            ["Częstochowa", "/pl/pl/czstochowa/275785/hourly-weather-forecast/275785"]
-        ]
+    def __init__(self, configFilename):
+        self.configFilename = configFilename
+        self.citiesList = []
+        self.timesList = []
+        self.pagesList = []
+        self.__getConfiguration()
+
+    def reloadConfiguration(self):
+        self.__init__(self.configFilename)
 
     @staticmethod
     def __getWebpages(root):
@@ -31,36 +34,40 @@ class xmlParser:
         return result
         # return [[time, time.find('TYPE').text, time.find('GETLINK').text] for time in root.findall('CITY')]
 
-    @staticmethod
-    def getConfiguration(filename):
-        xmlTree = ET.parse(os.path.join(os.getcwd(), filename))
+    def __getConfiguration(self):
+
+        xmlTree = ET.parse(os.path.join(os.getcwd(), self.configFilename))
         root = xmlTree.getroot()
         if root:
-            pages = xmlParser.__getWebpages(root)
-            if not pages:
-                print('kupa')
+            self.pagesList = xmlParser.__getWebpages(root)
+            if not self.pagesList:
+                raise xmlParserNoPagesLoadedError("pages = xmlParser.__getWebpages(root)", "No available webpages in "+self.configFilename)
 
-            citiesList = []
-            for page in pages:
+            self.citiesList = []
+            for page in self.pagesList:
                 for city in xmlParser.__getCityNamesAndLinks(page[3]):
-                    citiesList.append([city[1], page[2], city[2]])
+                    self.citiesList.append([city[1], page[2], city[2]])
 
+            if not self.citiesList:
+                raise xmlParserNoCitiesLoadedError("citiesList.append([city[1], page[2], city[2]])", "No available cities in "+self.configFilename)
 
+            self.timesList = xmlParser.__getTimes(root)
+            if not self.timesList:
+                raise xmlParserNoTimesLoadedError("times = xmlParser.__getTimes(root)", "No available times ranges in "+self.configFilename)
 
-            print(xmlParser.__getTimes(root))
-
-            # print(citiesList)
 
 class xmlParserException(Exception):
     def __init__(self, expression, message):
         self.expression = expression
         self.message = message
 
+
 class xmlParserNoPagesLoadedError(xmlParserException):
     pass
 
 
+class xmlParserNoCitiesLoadedError(xmlParserException):
+    pass
 
-
-        # pass
-
+class xmlParserNoTimesLoadedError(xmlParserException):
+    pass
