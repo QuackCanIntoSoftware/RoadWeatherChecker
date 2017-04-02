@@ -20,22 +20,27 @@ class CitiesDescriptions:
         import http.client as ht
         reconnectCounter = 0
 
-        while 1:
-            try:
-                print(self.baseUrl+self.currentGetLink)
-                conn = ht.HTTPConnection(self.baseUrl, port=80, timeout=5)
-                conn.request("GET", self.currentGetLink)
-            except TimeoutError:
-                reconnectCounter += 1
-                if reconnectCounter >= RECONNECTS:
-                    raise TimeoutError
-            except socket.timeout:
-                reconnectCounter += 1
-                if reconnectCounter >= RECONNECTS:
-                    raise TimeoutError
-            # except http.client.CannotSendRequest:
-            #     print("kuupa")\
-        print("Passed")
+
+        if 0:
+            while 1:
+                try:
+                    print(self.baseUrl+self.currentGetLink)
+                    conn = ht.HTTPConnection(self.baseUrl, port=80, timeout=5)
+                    conn.request("GET", self.currentGetLink)
+                except TimeoutError:
+                    reconnectCounter += 1
+                    if reconnectCounter >= RECONNECTS:
+                        raise TimeoutError
+                except socket.timeout:
+                    reconnectCounter += 1
+                    if reconnectCounter >= RECONNECTS:
+                        raise TimeoutError
+                # except http.client.CannotSendRequest:
+                #     print("kuupa")\
+            print("Passed")
+        else:
+            conn = ht.HTTPConnection(self.baseUrl, port=80, timeout=5)
+            conn.request("GET", self.currentGetLink)
 
         return xhtml.fromstring(conn.getresponse().read())
     
@@ -87,6 +92,12 @@ class CitiesDescriptions:
         nextLink = self.currenteTree.xpath('//div[@class="control-bar hourly-control"]//a[@class="right-float"]')[0].get('href')
         self.nextEightHoursLink = nextLink[nextLink.find(self.baseUrl) + len(self.baseUrl):]
 
+        self.pageCityName = self.currenteTree.xpath('// li[ @ id = "current-city-tab"] / a / span[@class="current-city"]/h1/text()')[0]
+
+        self.pageDay = self.currenteTree.xpath('//div[@class="hourly-table overview-hourly"]/table/thead/tr/th/text()')[0].strip()
+        print(self.pageDay)
+
+
     def addEightHours(self):
         if not self.nextEightHoursLink:
             self.getAdditionalParametersFromWebPage()
@@ -116,6 +127,54 @@ class CitiesDescriptions:
 
     def addToCharts(self, charts):
         pass
+
+    def getTodayFullInfo(self):
+        self.todayTable = [[]]
+
+        if not self.nextEightHoursLink:
+            self.getAdditionalParametersFromWebPage()
+
+        hourAdvance = int(self.nextEightHoursLink[self.nextEightHoursLink.find("?hour=")+6:])
+        if hourAdvance < 24:
+            self.todayTable = self.parseValuesFromCurrentWebPage()
+        else:
+            tempTable = self.parseValuesFromCurrentWebPage()
+            endIndex = tempTable[0].index('00')
+            print(endIndex)
+
+
+        # TODO: ogarnianie do godziny 24
+
+        # self.currentGetLink = self.nextEightHoursLink
+        # self.currenteTree = self.getWebPageeTree()
+        # self.nextEightHoursLink = ''
+        # newValues = self.parseValuesFromCurrentWebPage()
+
+
+
+
+    def getTomorrowFullInfo(self):
+        hour = 24
+        tomorrowValues = [[]]
+
+        self.currentGetLink = self.defaultGetLink + "?hour=" + str(hour)
+        self.currenteTree = self.getWebPageeTree()
+        tomorrowValues = self.parseValuesFromCurrentWebPage()
+
+        while hour < 48:
+            self.currentGetLink = self.defaultGetLink+"?hour="+str(hour)
+            self.currenteTree = self.getWebPageeTree()
+            newValues = self.parseValuesFromCurrentWebPage()
+
+            for i, sublist in enumerate(newValues):
+                tomorrowValues[i] = tomorrowValues[i] + newValues[i]
+            hour += 8
+
+        for subList in tomorrowValues:
+            print(subList)
+
+    # TODO: get 24h. Przenieśc get tomoroow i today do innej fukcji, a te zeby tylko ustalały zakres get24h(start)
+
 
 
 
