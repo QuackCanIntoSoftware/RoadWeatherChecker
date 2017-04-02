@@ -1,8 +1,31 @@
-<CONFIGURATION>
-	<PAGE NAME="AccuWeather" WWW="www.accuweather.com">
+<CONFIGURATIONa>
+	<PAGE>
+		<NAME>AccuWeather</NAME>
+		<WWW>www.accuweather.com</WWW>
 		<CITIES>
-			<CITY NAME="BIERUŃ" GETLINK="/pl/pl/bieru/2659691/hourly-weather-forecast/2659691"></CITY>
-			<CITY NAME="CZĘSTOCHOWA" GETLINK="/pl/pl/czstochowa/275785/hourly-weather-forecast/275785"></CITY>
+			<CITY>
+				<NAME>Bieruń</NAME>
+				<GETLINK>/pl/pl/bieru/2659691/hourly-weather-forecast/2659691</GETLINK>>
+			</CITY>
+			<CITY>
+				<NAME>Częstochowa</NAME>
+				<GETLINK>/pl/pl/czstochowa/275785/hourly-weather-forecast/275785"></GETLINK>
+			</CITY>
 		</CITIES>
-	</PAGE>	
-</CONFIGURATION>
+	</PAGE>
+	<TIMEa>
+		<TYPE>hour</TYPE>
+		<HOUR>12</HOUR>
+		<COUNT>10</COUNT>
+	</TIMEa>
+	<TIME>
+		<TYPE>hoasdfur</TYPE>
+		<HOUR>12</HOUR>
+		<COUNT>10</COUNT>
+	</TIME>
+	<TIME>
+		<TYPE>offset</TYPE>
+		<OFFSET>3</OFFSET>
+		<COUNT>10</COUNT>
+	</TIME>
+</CONFIGURATIONa>
