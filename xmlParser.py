@@ -23,6 +23,7 @@ class xmlParser:
         xmlTree = ET.parse(os.path.join(os.path.dirname(sys.argv[0]), filename))
         root = xmlTree.getroot()
         if root:
+            pass
 
         xmlParser.__getNamesAndLinks()
         pass

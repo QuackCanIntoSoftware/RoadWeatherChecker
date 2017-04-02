@@ -29,7 +29,7 @@ if 1:
     list = xmlParser()
     citiesObjs = [CitiesDescriptions(city[0], pageUrl, city[1], '') for city in list.citiesList]
     for city in citiesObjs:
-       # city.getTomorrowFullInfo()
+        #city.getTomorrowFullInfo()
         city.getTodayFullInfo()
 
     # cd = CitiesDescriptions('Bierun', pageUrl, pageGetLink, '')

@@ -108,7 +108,14 @@ class CitiesDescriptions:
         if not self.nextEightHoursLink:
             self.getAdditionalParametersFromWebPage()
 
-        hour = int(self.nextEightHoursLink[self.nextEightHoursLink.find("?hour=")+6:])
+        hourAdvance = int(self.nextEightHoursLink[self.nextEightHoursLink.find("?hour=")+6:])
+        if hourAdvance < 24:
+            self.todayTable = self.parseValuesFromCurrentWebPage()
+        else:
+            tempTable = self.parseValuesFromCurrentWebPage()
+            endIndex = tempTable[0].index('00')
+            print(endIndex)
+
 
         # TODO: ogarnianie do godziny 24
 
