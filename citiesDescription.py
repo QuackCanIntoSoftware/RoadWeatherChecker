@@ -1,7 +1,9 @@
 import lxml.html as xhtml
+import socket
 
-
+RECONNECTS = 10
 class CitiesDescriptions:
+
     def __init__(self, name, baseUrl, getLink, pageContent):
         self.name = name
         self.baseUrl = baseUrl
@@ -9,15 +11,32 @@ class CitiesDescriptions:
         if pageContent:
             self.currenteTree = xhtml.fromstring(pageContent)
         else:
-            self.currenteTree = getWebPageeTree()
+            self.currenteTree = self.getWebPageeTree()
         self.valuesList = self.parseValuesFromCurrentWebPage()
 
         self.nextEightHoursLink = ''
 
     def getWebPageeTree(self):
         import http.client as ht
-        conn = ht.HTTPConnection(self.baseUrl)
-        conn.request("GET", self.currentGetLink)
+        reconnectCounter = 0
+
+        while 1:
+            try:
+                print(self.baseUrl+self.currentGetLink)
+                conn = ht.HTTPConnection(self.baseUrl, port=80, timeout=5)
+                conn.request("GET", self.currentGetLink)
+            except TimeoutError:
+                reconnectCounter += 1
+                if reconnectCounter >= RECONNECTS:
+                    raise TimeoutError
+            except socket.timeout:
+                reconnectCounter += 1
+                if reconnectCounter >= RECONNECTS:
+                    raise TimeoutError
+            # except http.client.CannotSendRequest:
+            #     print("kuupa")\
+        print("Passed")
+
         return xhtml.fromstring(conn.getresponse().read())
     
     def getWebPageContent(self, getLink):
@@ -91,6 +110,12 @@ class CitiesDescriptions:
 
 
         #tree = xhtml.fromstring(wPageData)
+
+    def getAllInfo(self, timeRange):
+        pass
+
+    def addToCharts(self, charts):
+        pass
 
 
 
