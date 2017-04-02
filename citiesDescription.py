@@ -20,22 +20,27 @@ class CitiesDescriptions:
         import http.client as ht
         reconnectCounter = 0
 
-        while 1:
-            try:
-                print(self.baseUrl+self.currentGetLink)
-                conn = ht.HTTPConnection(self.baseUrl, port=80, timeout=5)
-                conn.request("GET", self.currentGetLink)
-            except TimeoutError:
-                reconnectCounter += 1
-                if reconnectCounter >= RECONNECTS:
-                    raise TimeoutError
-            except socket.timeout:
-                reconnectCounter += 1
-                if reconnectCounter >= RECONNECTS:
-                    raise TimeoutError
-            # except http.client.CannotSendRequest:
-            #     print("kuupa")\
-        print("Passed")
+
+        if 0:
+            while 1:
+                try:
+                    print(self.baseUrl+self.currentGetLink)
+                    conn = ht.HTTPConnection(self.baseUrl, port=80, timeout=5)
+                    conn.request("GET", self.currentGetLink)
+                except TimeoutError:
+                    reconnectCounter += 1
+                    if reconnectCounter >= RECONNECTS:
+                        raise TimeoutError
+                except socket.timeout:
+                    reconnectCounter += 1
+                    if reconnectCounter >= RECONNECTS:
+                        raise TimeoutError
+                # except http.client.CannotSendRequest:
+                #     print("kuupa")\
+            print("Passed")
+        else:
+            conn = ht.HTTPConnection(self.baseUrl, port=80, timeout=5)
+            conn.request("GET", self.currentGetLink)
 
         return xhtml.fromstring(conn.getresponse().read())
     
