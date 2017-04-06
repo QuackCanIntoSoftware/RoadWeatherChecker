@@ -1,7 +1,7 @@
 from xml.etree import ElementTree as ET
 import os
 
-class xmlParser:
+class XmlParser:
     def __init__(self, configFilename):
         self.configFilename = configFilename
         self.citiesList = []
@@ -49,19 +49,19 @@ class xmlParser:
         xmlTree = ET.parse(os.path.join(os.getcwd(), self.configFilename))
         root = xmlTree.getroot()
         if root:
-            self.pagesList = xmlParser.__getWebpages(root)
+            self.pagesList = XmlParser.__getWebpages(root)
             if not self.pagesList:
                 raise xmlParserNoPagesLoadedError("pages = xmlParser.__getWebpages(root)", "No available webpages in "+self.configFilename)
 
             self.citiesList = []
             for page in self.pagesList:
-                for city in xmlParser.__getCityNamesAndLinks(page[3]):
+                for city in XmlParser.__getCityNamesAndLinks(page[3]):
                     self.citiesList.append([city[1], page[2], city[2]])
 
             if not self.citiesList:
                 raise xmlParserNoCitiesLoadedError("citiesList.append([city[1], page[2], city[2]])", "No available cities in "+self.configFilename)
 
-            self.timesList = xmlParser.__getTimes(root)
+            self.timesList = XmlParser.__getTimes(root)
             if not self.timesList:
                 raise xmlParserNoTimesLoadedError("times = xmlParser.__getTimes(root)", "No available times ranges in "+self.configFilename)
 

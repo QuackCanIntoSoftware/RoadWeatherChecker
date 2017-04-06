@@ -122,8 +122,8 @@ class CitiesDescriptions:
 
         #tree = xhtml.fromstring(wPageData)
 
-    def getAllInfo(self, timeRange):
-        pass
+    def getRawInfo(self, timeRange):
+        return self.valuesList
 
     def addToCharts(self, charts):
         pass
