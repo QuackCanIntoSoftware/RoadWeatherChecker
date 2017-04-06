@@ -134,6 +134,7 @@ class CitiesDescriptions:
 
     def downloadNecessaryData(self):
         # TODO: określenie maksymalnej godziny
+        pass
 
 
     def __getHourData(self, sHour, eHour):
