@@ -10,20 +10,25 @@ class RoadWeatherChecker:
         #reading config file
         self.config = XmlParser(configFile)
         self.printer = Printer()
+        # self.results [ [time, page, city results, city results, ... ]...]
+        self.results = []
         # self.citiesList = citiesList
 
     def getValues(self):
 
-        for time in self.config.citiesList:
+        for time in self.config.timesList:
             for page in self.config.pagesList:
                 results = []
                 for city in self.config.citiesList:
-                    currentCity = CitiesDescriptions(city[0], city[1], city[2], testValues.rawWebpage)
-                    results.append(currentCity.getRawInfo(time))
+                    cityInfo = CitiesDescriptions(city[0], city[1], city[2])
+                    cityInfo.getRawInfo(time)
+                    self.results.append([time, page, cityInfo])
+                    # results.append(currentCity.getRawInfo(time))
                     # print(results)
 
     def run(self):
         self.getValues()
-        self.printer.transformData(testValues.rawData)
+        for res in self.results:
+            print( res[2].name, self.printer.transformData(res[2].valuesList))
 
 

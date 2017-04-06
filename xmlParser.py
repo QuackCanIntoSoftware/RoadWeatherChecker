@@ -35,10 +35,14 @@ class XmlParser:
     def __getTimes(root):
         result = []
         for time in root.findall('TIME'):
-            if time.find('TYPE').text == "hour":
-                result.append([time.find('TYPE').text, time.find('HOUR').text, time.find('COUNT').text])
-            elif time.find('TYPE').text == 'offset':
-                result.append([time.find('TYPE').text, time.find('OFFSET').text, time.find('COUNT').text])
+            if time.find('TYPE').text.lower() == "hour":
+                result.append([time.find('TYPE').text.lower(), int(time.find('START_HOUR').text), int(time.find('END_HOUR').text)])
+            elif time.find('TYPE').text.lower() == 'offset':
+                result.append([time.find('TYPE').text.lower(), int(time.find('OFFSET').text), int(time.find('COUNT').text)])
+            elif time.find('TYPE').text.lower() == 'houroffset':
+                result.append([time.find('TYPE').text.lower(), int(time.find('HOUR').text), int(time.find('COUNT').text)])
+            elif time.find('TYPE').text.lower() == 'now':
+                result.append([time.find('TYPE').text.lower(), int(time.find('COUNT').text)])
             else:
                 pass
         return result

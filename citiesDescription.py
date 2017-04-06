@@ -4,17 +4,27 @@ import socket
 RECONNECTS = 10
 class CitiesDescriptions:
 
-    def __init__(self, name, baseUrl, getLink, pageContent):
+    # def __init__(self, name, baseUrl, getLink, pageContent):
+    #     self.name = name
+    #     self.baseUrl = baseUrl
+    #     self.currentGetLink = getLink
+    #     if pageContent:
+    #         self.currenteTree = xhtml.fromstring(pageContent)
+    #     else:
+    #         self.currenteTree = self.getWebPageeTree()
+    #     self.valuesList = self.parseValuesFromCurrentWebPage()
+    #
+    #     self.nextEightHoursLink = ''
+
+    def __init__(self, name, baseUrl, getLink):
         self.name = name
         self.baseUrl = baseUrl
         self.currentGetLink = getLink
-        if pageContent:
-            self.currenteTree = xhtml.fromstring(pageContent)
-        else:
-            self.currenteTree = self.getWebPageeTree()
-        self.valuesList = self.parseValuesFromCurrentWebPage()
+        self.currenteTree = None
+        self.valuesList = []
 
         self.nextEightHoursLink = ''
+
 
     def getWebPageeTree(self):
         import http.client as ht
@@ -122,11 +132,34 @@ class CitiesDescriptions:
 
         #tree = xhtml.fromstring(wPageData)
 
-    def getRawInfo(self, timeRange):
-        return self.valuesList
+    def downloadNecessaryData(self):
+        # TODO: określenie maksymalnej godziny
 
-    def addToCharts(self, charts):
-        pass
+
+    def __getHourData(self, sHour, eHour):
+        print("Start hour:", sHour, "end hour:", eHour)
+
+    def __getHourOffsetData(self, hour, count):
+        print("Start:", hour, "for next", count)
+
+    def __getOffsetData(self, start, count):
+        print("Offset:", start, "for next", count)
+
+    def __getNowData(self, count):
+        print("From now for next", count)
+
+    def getRawInfo(self, timeRange):
+        print(timeRange)
+        if timeRange[0] == 'hour':
+            self.__getHourData(timeRange[1], timeRange[2])
+        elif timeRange[0] == 'offset':
+            self.__getOffsetData(timeRange[1], timeRange[2])
+        elif timeRange[0] == 'houroffset':
+            self.__getHourOffsetData(timeRange[1], timeRange[2])
+        elif timeRange[0] == 'now':
+            self.__getNowData(timeRange[1])
+
+        return self.valuesList
 
     def getTodayFullInfo(self):
         self.todayTable = [[]]

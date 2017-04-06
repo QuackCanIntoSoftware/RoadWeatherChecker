@@ -13,19 +13,23 @@
 			</CITY>
 		</CITIES>
 	</PAGE>
-	<TIMEa>
-		<TYPE>hour</TYPE>
-		<HOUR>12</HOUR>
-		<COUNT>10</COUNT>
-	</TIMEa>
 	<TIME>
-		<TYPE>hoasdfur</TYPE>
+		<TYPE>hour</TYPE>
+		<START_HOUR>12</START_HOUR>
+		<END_HOUR>10</END_HOUR>
+	</TIME>
+	<TIME>
+		<TYPE>hourOffset</TYPE>
 		<HOUR>12</HOUR>
 		<COUNT>10</COUNT>
 	</TIME>
 	<TIME>
 		<TYPE>offset</TYPE>
 		<OFFSET>3</OFFSET>
+		<COUNT>10</COUNT>
+	</TIME>
+	<TIME>
+		<TYPE>now</TYPE>
 		<COUNT>10</COUNT>
 	</TIME>
 </CONFIGURATIONa>
