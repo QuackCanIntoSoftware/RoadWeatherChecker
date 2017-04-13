@@ -19,9 +19,10 @@ class CitiesDescriptions:
     def __init__(self, name, baseUrl, getLink):
         self.name = name
         self.baseUrl = baseUrl
+        self.getLink = getLink
         self.currentGetLink = getLink
         self.currenteTree = None
-        self.valuesList = []
+        self.rawValuesList = []
 
         self.nextEightHoursLink = ''
 
@@ -123,18 +124,32 @@ class CitiesDescriptions:
         # print(self.valuesList)
         # print()
         # print(newValues)
-        self.mergeWithValuesTable(newValues)
+        self.mergeWithRawValuesTable(newValues)
 
-    def mergeWithValuesTable(self, newValues):
-        for i, sublist in enumerate(newValues):
-            self.valuesList[i] = self.valuesList[i] + newValues[i]
+    def mergeWithRawValuesTable(self, newValues):
+        if not self.rawValuesList:
+            self.rawValuesList = newValues
+        else:
+            for i, sublist in enumerate(newValues):
+                self.rawValuesList[i] = self.rawValuesList[i] + newValues[i]
 
 
         #tree = xhtml.fromstring(wPageData)
 
-    def downloadNecessaryData(self):
-        # TODO: określenie maksymalnej godziny
-        pass
+    def downloadDataInRange(self, start, end):
+        currentHour = start
+        self.rawValuesList = []
+
+        while currentHour < end:
+            self.currentGetLink = self.getLink+"?hour="+str(currentHour)
+            self.currenteTree = self.getWebPageeTree()
+            newValues = self.parseValuesFromCurrentWebPage()
+
+            self.mergeWithRawValuesTable(newValues)
+            currentHour += 8
+
+    def printRawValues(self):
+        [print(row) for row in self.rawValuesList]
 
 
     def __getHourData(self, sHour, eHour):
@@ -160,7 +175,7 @@ class CitiesDescriptions:
         elif timeRange[0] == 'now':
             self.__getNowData(timeRange[1])
 
-        return self.valuesList
+        return self.rawValuesList
 
     def getTodayFullInfo(self):
         self.todayTable = [[]]
@@ -177,7 +192,6 @@ class CitiesDescriptions:
             print(endIndex)
 
 
-        # TODO: ogarnianie do godziny 24
 
         # self.currentGetLink = self.nextEightHoursLink
         # self.currenteTree = self.getWebPageeTree()
@@ -207,7 +221,6 @@ class CitiesDescriptions:
         for subList in tomorrowValues:
             print(subList)
 
-    # TODO: get 24h. Przenieśc get tomoroow i today do innej fukcji, a te zeby tylko ustalały zakres get24h(start)
 
 
 

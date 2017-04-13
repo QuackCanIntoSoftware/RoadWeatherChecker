@@ -17,7 +17,7 @@ class RoadWeatherChecker:
         # self.citiesList = citiesList
         self.timeLimits = None
     
-    def __getHourData(self, start, end, nowHour):
+    def __getHourLimits(self, start, end, nowHour):
         if start <= nowHour:
             timeMin = nowHour
         else:
@@ -32,12 +32,12 @@ class RoadWeatherChecker:
 
         return[timeMin, timeMax]
 
-    def __getOffsetData(self, offset, count, nowHour):
+    def __getOffsetLimits(self, offset, count, nowHour):
         timeMin = nowHour + offset
         timeMax = timeMin + count
         return [timeMin, timeMax]
 
-    def __getHourOffsetData(self, start, count, nowHour):
+    def __getHourOffsetLimits(self, start, count, nowHour):
         if start <= nowHour:
             timeMin = nowHour
         else:
@@ -45,7 +45,7 @@ class RoadWeatherChecker:
         timeMax = timeMin + count
         return [timeMin, timeMax]
 
-    def __getNowData(self, count, nowHour):
+    def __getNowLimits(self, count, nowHour):
         return [nowHour, nowHour + count]
 
 
@@ -59,13 +59,13 @@ class RoadWeatherChecker:
         timeLim = [nowHour + 24, nowHour]
         for time in self.config.timesList:
             if time[0] == 'hour':
-                tempTimes = self.__getHourData(time[1], time[2], nowHour)
+                tempTimes = self.__getHourLimits(time[1], time[2], nowHour)
             elif time[0] == 'offset':
-                tempTimes = self.__getOffsetData(time[1], time[2], nowHour)
+                tempTimes = self.__getOffsetLimits(time[1], time[2], nowHour)
             elif time[0] == 'houroffset':
-                tempTimes = self.__getHourOffsetData(time[1], time[2], nowHour)
+                tempTimes = self.__getHourOffsetLimits(time[1], time[2], nowHour)
             elif time[0] == 'now':
-                tempTimes = self.__getNowData(time[1], nowHour)
+                tempTimes = self.__getNowLimits(time[1], nowHour)
                 pass
 
             if tempTimes[0] < timeLim[0]:
@@ -74,6 +74,13 @@ class RoadWeatherChecker:
                 timeLim[1] = tempTimes[1]
 
         self.timeLimits = timeLim
+
+    def __downloadData(self):
+        for city in self.citiesData:
+            city.downloadDataInRange(self.timeLimits[0], self.timeLimits[1])
+            print(city.name+"=========================")
+            city.printRawValues()
+            print('\n\n\n')
 
 
 
@@ -92,7 +99,11 @@ class RoadWeatherChecker:
 
     def run(self):
         self.__determineMaxTime()
+        self.__downloadData()
+        #now data is downloaded
+        # TODO: select what is needed using __get####Limits and print it.
 
+        # TODO: needs refactor. getValue is awfull.
         self.getValues()
         for res in self.results:
             print(res[2].name, self.printer.transformData(res[2].valuesList))
