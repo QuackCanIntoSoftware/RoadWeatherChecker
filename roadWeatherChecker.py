@@ -15,25 +15,67 @@ class RoadWeatherChecker:
         # self.results [ [time, page, city results, city results, ... ]...]
         self.results = []
         # self.citiesList = citiesList
+        self.timeLimits = None
+    
+    def __getHourData(self, start, end, nowHour):
+        if start <= nowHour:
+            timeMin = nowHour
+        else:
+            timeMin = start
+
+        if nowHour <= end:
+            # dokonczenie dzis
+            timeMax = end
+        else:
+            # dokonczenie jutro
+            timeMax = 24 + end
+
+        return[timeMin, timeMax]
+
+    def __getOffsetData(self, offset, count, nowHour):
+        timeMin = nowHour + offset
+        timeMax = timeMin + count
+        return [timeMin, timeMax]
+
+    def __getHourOffsetData(self, start, count, nowHour):
+        if start <= nowHour:
+            timeMin = nowHour
+        else:
+            timeMin = start
+        timeMax = timeMin + count
+        return [timeMin, timeMax]
+
+    def __getNowData(self, count, nowHour):
+        return [nowHour, nowHour + count]
+
 
     def __determineMaxTime(self):
         import datetime
         nowHour = datetime.datetime.now().hour
 
-        def calculateDuration(start, end, now):
 
         # TODO: obliczanie maksymalnej odleglosci czasowe
 
+        timeLim = [nowHour + 24, nowHour]
         for time in self.config.timesList:
             if time[0] == 'hour':
-                self.__getHourData(timeRange[1], timeRange[2])
+                tempTimes = self.__getHourData(time[1], time[2], nowHour)
             elif time[0] == 'offset':
-                self.__getOffsetData(timeRange[1], timeRange[2])
+                tempTimes = self.__getOffsetData(time[1], time[2], nowHour)
             elif time[0] == 'houroffset':
-                self.__getHourOffsetData(timeRange[1], timeRange[2])
+                tempTimes = self.__getHourOffsetData(time[1], time[2], nowHour)
             elif time[0] == 'now':
-                self.__getNowData(timeRange[1])
-        pass
+                tempTimes = self.__getNowData(time[1], nowHour)
+                pass
+
+            if tempTimes[0] < timeLim[0]:
+                timeLim[0] = tempTimes[0]
+            if tempTimes[1] > timeLim[1]:
+                timeLim[1] = tempTimes[1]
+
+        self.timeLimits = timeLim
+
+
 
     def getValues(self):
 
@@ -49,9 +91,10 @@ class RoadWeatherChecker:
                     # print(results)
 
     def run(self):
+        self.__determineMaxTime()
 
         self.getValues()
         for res in self.results:
-            print( res[2].name, self.printer.transformData(res[2].valuesList))
+            print(res[2].name, self.printer.transformData(res[2].valuesList))
 
 

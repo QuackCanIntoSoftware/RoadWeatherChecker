@@ -15,8 +15,13 @@
 	</PAGE>
 	<TIME>
 		<TYPE>hour</TYPE>
-		<START_HOUR>12</START_HOUR>
+		<START_HOUR>23</START_HOUR>
 		<END_HOUR>10</END_HOUR>
+	</TIME>
+	<TIME>
+		<TYPE>hour</TYPE>
+		<START_HOUR>22</START_HOUR>
+		<END_HOUR>11</END_HOUR>
 	</TIME>
 	<TIME>
 		<TYPE>hourOffset</TYPE>
@@ -26,7 +31,7 @@
 	<TIME>
 		<TYPE>offset</TYPE>
 		<OFFSET>3</OFFSET>
-		<COUNT>10</COUNT>
+		<COUNT>40</COUNT>
 	</TIME>
 	<TIME>
 		<TYPE>now</TYPE>
