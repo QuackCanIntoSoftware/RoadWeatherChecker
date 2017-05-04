@@ -1,6 +1,11 @@
 from xmlParser import XmlParser
 
+import matplotlib.pyplot as plt
+
 class Printer:
+
+    def __init__(self, config):
+        self.config = config
 
     def __removeNonDigits(self, iList):
         oList = []
@@ -11,9 +16,21 @@ class Printer:
     def transformData(self, iData):
         return [self.__removeNonDigits(row) for row in iData]
 
+    def printOneWindow(self, dataDict, page, time):
+        print("print one:\n", dataDict)
+
+        print(len(list(dataDict.values())[0]))
+
+        for key, value in dataDict.items():
+            print(key)
+            [print(val) for val in value]
+        diction = {}
+
+        #
+
+        pass
 
     def showResults(data):
-        import matplotlib.pyplot as plt
 
         data = cropNumbers(data)
 

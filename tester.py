@@ -22,6 +22,7 @@ try:
 
     rwc.run()
 
+
 except FileNotFoundError:
     print("File", CONFIG_FILE, "doesn't exists or is not reachable")
 except xmlParser.xmlParserNoPagesLoadedError as e:

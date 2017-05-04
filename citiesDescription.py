@@ -198,9 +198,6 @@ class CitiesDescriptions:
         # self.nextEightHoursLink = ''
         # newValues = self.parseValuesFromCurrentWebPage()
 
-
-
-
     def getTomorrowFullInfo(self):
         hour = 24
         tomorrowValues = [[]]
@@ -220,6 +217,61 @@ class CitiesDescriptions:
 
         for subList in tomorrowValues:
             print(subList)
+
+    def __getHourLimits(self, start, end, nowHour):
+        if start <= nowHour:
+            timeMin = nowHour
+        else:
+            timeMin = start
+
+        if start <= end:
+            # dokonczenie dzis
+            timeMax = end
+        else:
+            # dokonczenie jutro
+            timeMax = 24 + end
+
+        return [timeMin, timeMax]
+
+    def __getOffsetLimits(self, offset, count, nowHour):
+        timeMin = nowHour + offset
+        timeMax = timeMin + count
+        return [timeMin, timeMax]
+
+    def __getHourOffsetLimits(self, start, count, nowHour):
+        if start <= nowHour:
+            timeMin = nowHour
+        else:
+            timeMin = start
+        timeMax = timeMin + count
+        return [timeMin, timeMax]
+
+    def __getNowLimits(self, count, nowHour):
+        return [nowHour, nowHour + count]
+
+
+    def filterData(self, time):
+        import datetime
+        nowHour = datetime.datetime.now().hour
+
+        if time[0] == 'hour':
+            tempTimes = self.__getHourLimits(time[1], time[2], nowHour)
+        elif time[0] == 'offset':
+            tempTimes = self.__getOffsetLimits(time[1], time[2], nowHour)
+        elif time[0] == 'houroffset':
+            tempTimes = self.__getHourOffsetLimits(time[1], time[2], nowHour)
+        elif time[0] == 'now':
+            tempTimes = self.__getNowLimits(time[1], nowHour)
+
+        index = tempTimes[0] % 24
+        shift = int(tempTimes[0]/24)
+
+        start = self.rawValuesList[0].index(str(index)) + shift * 24
+        end = start + (tempTimes[1] - tempTimes[0])
+
+        return [l[start:end] for l in self.rawValuesList]
+
+
 
 
 
