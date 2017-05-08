@@ -1,12 +1,24 @@
 from xml.etree import ElementTree as ET
 import os
 
+# TEMPERATURE_STR = 'Temperature'
+# REALFEEL_STR ="Real Feel Temp"
+# WIND_STR = "Wind speed"
+# RAIN_STR =  			position="4" 	text="Rain prop"		min="0" 	max="25">TRUE</RAIN>
+# 			<SNOW 			position="5" 	text="Snow prop"		min="0" 	max="0">FALSE</SNOW>
+# 			<ICE 			position="6" 	text="Ice prop"			min="0" 	max="0">FALSE</ICE>
+# 			<UV 			position="7" 	text="UV Index"			min="0" 	max="20">FALSE</UV>
+# 			<CLOUDS 		position="8" 	text="Cloud cover"		min="0" 	max="90">FALSE</CLOUDS>
+# 			<HUMIDITY 		position="9" 	text="Humidity"			min="0" 	max="80">TRUE</HUMIDITY>
+# 			<DEWPOINT 		position="10" 	text="Dew point"
+
 class XmlParser:
     def __init__(self, configFilename):
         self.configFilename = configFilename
         self.citiesList = []
         self.timesList = []
         self.pagesList = []
+        self.displayConfigDict = {}
         self.__getConfiguration()
 
     def reloadConfiguration(self):
@@ -48,6 +60,23 @@ class XmlParser:
         return result
         # return [[time, time.find('TYPE').text, time.find('GETLINK').text] for time in root.findall('CITY')]
 
+    @staticmethod
+    def __getDisplayConfig(root):
+        result = {}
+        dispCfgShow = root.findall("DISPLAYCONFIG/SHOW")
+        if dispCfgShow:
+            dispCfgShow = dispCfgShow[0]
+            # print({param.tag: if param.text.lower() is  for param in dispCfgShow})
+            for param in dispCfgShow:
+                if param.text.lower() in ['true', 'yes', 't', 'y', 'tak']:
+                    result[param.tag] = [True, param.attrib]
+                else:
+                    result[param.tag] = [False, param.attrib]
+        # print(result)
+        return result
+            #print(str(param.tag))
+
+
     def __getConfiguration(self):
 
         xmlTree = ET.parse(os.path.join(os.getcwd(), self.configFilename))
@@ -68,6 +97,8 @@ class XmlParser:
             self.timesList = XmlParser.__getTimes(root)
             if not self.timesList:
                 raise xmlParserNoTimesLoadedError("times = xmlParser.__getTimes(root)", "No available times ranges in "+self.configFilename)
+
+            self.displayConfigDict = XmlParser.__getDisplayConfig(root)
 
 
 class xmlParserException(Exception):

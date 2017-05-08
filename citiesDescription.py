@@ -239,12 +239,21 @@ class CitiesDescriptions:
         return [timeMin, timeMax]
 
     def __getHourOffsetLimits(self, start, count, nowHour):
+        # TODO: bledne liczenie
+        # if start < nowHour:
+        #     timeMin = start + 24
         if start <= nowHour:
             timeMin = nowHour
         else:
             timeMin = start
         timeMax = timeMin + count
         return [timeMin, timeMax]
+
+        # if start < nowHour:
+        #     #juz dzisiaj byl, wiec jedzieny od jutra
+        #     timeMin = start + 24
+        #
+
 
     def __getNowLimits(self, count, nowHour):
         return [nowHour, nowHour + count]
@@ -266,15 +275,9 @@ class CitiesDescriptions:
         index = tempTimes[0] % 24
         shift = int(tempTimes[0]/24)
 
-        start = self.rawValuesList[0].index(str(index)) + shift * 24
+        start = self.rawValuesList[0].index(str(index).zfill(2)) + shift * 24
         end = start + (tempTimes[1] - tempTimes[0])
 
         return [l[start:end] for l in self.rawValuesList]
-
-
-
-
-
-
 
 

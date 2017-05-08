@@ -14,19 +14,20 @@
 		</CITIES>
 	</PAGE>
 	<TIME>
-		<TYPE>hour</TYPE>
-		<START_HOUR>23</START_HOUR>
-		<END_HOUR>10</END_HOUR>
+		<TYPE>hourOffset</TYPE>
+		<HOUR>6</HOUR>
+		<COUNT>6</COUNT>
 	</TIME>
+	<TIME>
+		<TYPE>hour</TYPE>
+		<START_HOUR>10</START_HOUR>
+		<END_HOUR>12</END_HOUR>
+	</TIME>
+	<C>
 	<TIME>
 		<TYPE>hour</TYPE>
 		<START_HOUR>22</START_HOUR>
 		<END_HOUR>11</END_HOUR>
-	</TIME>
-	<TIME>
-		<TYPE>hourOffset</TYPE>
-		<HOUR>12</HOUR>
-		<COUNT>10</COUNT>
 	</TIME>
 	<TIME>
 		<TYPE>offset</TYPE>
@@ -37,4 +38,20 @@
 		<TYPE>now</TYPE>
 		<COUNT>10</COUNT>
 	</TIME>
+	</C>
+<DISPLAYCONFIG>
+		<SHOW>
+			<TEMPERATURE 	position="1" 	text="Temperature" 		min="10"	max="100">TRUE</TEMPERATURE>
+			<REALFEEL 		position="2" 	text="Real Feel Temp"	min="10" 	max="100">TRUE</REALFEEL>
+			<WIND 			position="3" 	text="Wind speed"		min="0" 	max="30">TRUE</WIND>
+			<RAIN 			position="4" 	text="Rain prop"		min="0" 	max="25">TRUE</RAIN>
+			<SNOW 			position="5" 	text="Snow prop"		min="0" 	max="0">FALSE</SNOW>
+			<ICE 			position="6" 	text="Ice prop"			min="0" 	max="0">FALSE</ICE>
+			<UV 			position="7" 	text="UV Index"			min="0" 	max="20">FALSE</UV>
+			<CLOUDS 		position="8" 	text="Cloud cover"		min="0" 	max="90">FALSE</CLOUDS>
+			<HUMIDITY 		position="9" 	text="Humidity"			min="0" 	max="80">TRUE</HUMIDITY>
+			<DEWPOINT 		position="10" 	text="Dew point"		min="-10" 	max="10">FALSE</DEWPOINT>
+		</SHOW>
+	</DISPLAYCONFIG>
+
 </CONFIGURATIONa>

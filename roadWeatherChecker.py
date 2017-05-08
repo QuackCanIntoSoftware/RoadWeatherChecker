@@ -38,6 +38,8 @@ class RoadWeatherChecker:
         return [timeMin, timeMax]
 
     def __getHourOffsetLimits(self, start, count, nowHour):
+        # if start < nowHour:
+        #     timeMin = start + 24
         if start <= nowHour:
             timeMin = nowHour
         else:
