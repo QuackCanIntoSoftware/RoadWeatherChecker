@@ -14,16 +14,16 @@
 		</CITIES>
 	</PAGE>
 	<TIME>
+		<TYPE>hour</TYPE>
+		<START_HOUR>6</START_HOUR>
+		<END_HOUR>18</END_HOUR>
+	</TIME>
+	<C>
+	<TIME>
 		<TYPE>hourOffset</TYPE>
 		<HOUR>6</HOUR>
 		<COUNT>6</COUNT>
 	</TIME>
-	<TIME>
-		<TYPE>hour</TYPE>
-		<START_HOUR>10</START_HOUR>
-		<END_HOUR>12</END_HOUR>
-	</TIME>
-	<C>
 	<TIME>
 		<TYPE>hour</TYPE>
 		<START_HOUR>22</START_HOUR>

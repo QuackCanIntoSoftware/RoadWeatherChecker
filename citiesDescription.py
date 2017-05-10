@@ -220,16 +220,38 @@ class CitiesDescriptions:
 
     def __getHourLimits(self, start, end, nowHour):
         if start <= nowHour:
-            timeMin = nowHour
+            if end <= nowHour:
+                #jutro
+                timeMin = start + 24
+                if end > start:
+                    timeMax = end + 24
+                else:
+                    timeMax = end + 48
+            else:
+                # dzisiaj z dokonczeniem
+                timeMin = nowHour
+                timeMax = end
         else:
-            timeMin = start
+            if end > start:
+                # to dzisiaj ale pozniej
+                timeMin = start
+                timeMax = end
+            else:
+                # dzisiaj ale dokonczenie jutro
+                timeMin = start
+                timeMax = end + 24
 
-        if start <= end:
-            # dokonczenie dzis
-            timeMax = end
-        else:
-            # dokonczenie jutro
-            timeMax = 24 + end
+        # if start <= nowHour:
+        #     timeMin = nowHour
+        # else:
+        #     timeMin = start
+        #
+        # if start <= end:
+        #     # dokonczenie dzis
+        #     timeMax = end
+        # else:
+        #     # dokonczenie jutro
+        #     timeMax = 24 + end
 
         return [timeMin, timeMax]
 
@@ -240,10 +262,10 @@ class CitiesDescriptions:
 
     def __getHourOffsetLimits(self, start, count, nowHour):
         # TODO: bledne liczenie
-        # if start < nowHour:
-        #     timeMin = start + 24
-        if start <= nowHour:
-            timeMin = nowHour
+        if start < nowHour:
+            timeMin = start + 24
+        # if start <= nowHour:
+        #     timeMin = nowHour
         else:
             timeMin = start
         timeMax = timeMin + count
@@ -275,7 +297,8 @@ class CitiesDescriptions:
         index = tempTimes[0] % 24
         shift = int(tempTimes[0]/24)
 
-        start = self.rawValuesList[0].index(str(index).zfill(2)) + shift * 24
+        #TODO: Nie podoba mi sie filtrowanie. Zaleczone przez pobieranie od biezacej godziny mimo wszystko
+        start = (self.rawValuesList[0].index(str(index).zfill(2)) + shift * 24) - nowHour
         end = start + (tempTimes[1] - tempTimes[0])
 
         return [l[start:end] for l in self.rawValuesList]

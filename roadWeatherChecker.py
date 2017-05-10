@@ -18,17 +18,42 @@ class RoadWeatherChecker:
         self.timeLimits = None
     
     def __getHourLimits(self, start, end, nowHour):
-        if start <= nowHour:
-            timeMin = nowHour
-        else:
-            timeMin = start
 
-        if nowHour <= end:
-            # dokonczenie dzis
-            timeMax = end
+        if start <= nowHour:
+            if end <= nowHour:
+                #jutro
+                timeMin = start + 24
+                if end > start:
+                    timeMax = end + 24
+                else:
+                    timeMax = end + 48
+            else:
+                # dzisiaj z dokonczeniem
+                timeMin = nowHour
+                timeMax = end
         else:
-            # dokonczenie jutro
-            timeMax = 24 + end
+            if end > start:
+                # to dzisiaj ale pozniej
+                timeMin = start
+                timeMax = end
+            else:
+                # dzisiaj ale dokonczenie jutro
+                timeMin = start
+                timeMax = end + 24
+
+
+
+        # if start <= nowHour:
+        #     timeMin = nowHour
+        # else:
+        #     timeMin = start
+        #
+        # if nowHour <= end:
+        #     # dokonczenie dzis
+        #     timeMax = end
+        # else:
+        #     # dokonczenie jutro
+        #     timeMax = 24 + end
 
         return[timeMin, timeMax]
 
@@ -38,10 +63,10 @@ class RoadWeatherChecker:
         return [timeMin, timeMax]
 
     def __getHourOffsetLimits(self, start, count, nowHour):
-        # if start < nowHour:
-        #     timeMin = start + 24
-        if start <= nowHour:
-            timeMin = nowHour
+        if start < nowHour:
+            timeMin = start + 24
+        # if start <= nowHour:
+        #     timeMin = nowHour
         else:
             timeMin = start
         timeMax = timeMin + count
@@ -55,7 +80,9 @@ class RoadWeatherChecker:
         import datetime
         nowHour = datetime.datetime.now().hour
 
-        timeLim = [nowHour + 24, nowHour]
+        #TODO: poprawić filtorowanie danych, bo gubi sie kiedy dane są ściagiete tylko z konkretnego zakresu. Lekarstwo w postaci odczytywania od biezacej godziny
+        #timeLim = [nowHour + 24, nowHour]
+        timeLim = [nowHour, nowHour]
         for time in self.config.timesList:
             if time[0] == 'hour':
                 tempTimes = self.__getHourLimits(time[1], time[2], nowHour)
@@ -134,8 +161,8 @@ class RoadWeatherChecker:
 
     def run(self):
         self.__determineMaxTime()
-        #self.__downloadData()
-        self.__downloadDataDEBUG()
+        self.__downloadData()
+        #self.__downloadDataDEBUG()
         #now data is downloaded
         # TODO: select what is needed using __get####Limits and print it.
         self.__printAll()
